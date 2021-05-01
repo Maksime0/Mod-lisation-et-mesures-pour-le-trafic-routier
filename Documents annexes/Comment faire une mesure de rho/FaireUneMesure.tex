@@ -1,0 +1,83 @@
+\documentclass[12pt, openany]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[french]{babel}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{enumitem}
+\usepackage[export]{adjustbox}
+\usepackage{lscape}
+\usepackage{pgfgantt}
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\usepackage{diagbox}
+\usepackage{slashbox}
+\usepackage[table]{xcolor}
+
+\begin{document}
+
+\centering \textbf{\Large Première expérience}
+
+\flushleft
+Il est compliqué de faire une mesure de la densité $\rho$ directement car nous devrions être capable de compter le nombre de véhicule qui se trouve sur un tronçon de longue distance à un instant $t$, ce qu'il se passe à un endroit $x$ appartenant au tronçon et peut être trop loin pour être vu.\\
+Nous pouvons cependant mesurer le flux $f$ à un endroit $x$ et supposé qu'il est a peu près constant sur une partie du tronçon $(x-dx,x+dx)$ que nous appelerons $(E-S)$, cela correspond un un système ouvert un mécanique des fluides sur lequel nous pouvons appliquer le théorème de Bernoulli. C'est à dire que le flux entrant est égal au flux sortant et ce flux est le même sur une petite partie du tronçon ($E-S$).\\
+
+\centering\begin{tikzpicture}
+	\draw (0,0)node[left]{A} --(8,0) node[right]{B};
+	\draw [line width=1pt] (5,0)node{\tiny$|$} node[below]{E} --(6,0) node{\tiny$|$} node[below]{S};
+\end{tikzpicture}
+\flushleft
+
+Nous pouvons aussi mesurer la vitesse des véhicules et en déduire la moyenne $v$.\\
+Nous pouvons donc récupérer la densité $\rho$ grâce à la formule $f=\rho v \Leftrightarrow \rho =\dfrac{f}{v}$\normalsize\\
+Nous pouvons bien sur mesurer le flux $\rho$ en comptant le nombre de véhicule $N$ qui passe sur une durée $T$ qui doit être suffisamment longue pour une mesure précise mais pas trop longue car la densité $\rho$ dépend du temps.
+
+$$ 
+\left\{
+    \begin{array}{l}
+        f=\rho v \\
+        f=\frac{N}{T}
+    \end{array}
+\right. \Rightarrow
+\rho = \frac{N}{v.T}
+$$
+
+Après un ensemble de mesures, nous pourrons nous servir des couples de $(\rho , v)$ pour déterminer la droite passant au plus proche de chaque point en utilisant par exemple la méthode des moindres carrés.
+Nous pourrons donc déterminer $\rho_{max}$ et $v_{max}$ grâce à :
+$$ 
+\left\{
+    \begin{array}{lll}
+        v(0)&=&v_{max}\\
+        v(\rho_{max})&=&0
+    \end{array}
+\right.
+$$
+
+Nous pourrons aussi donné la courbe approchée de $f(\rho)$ qui vaut :
+$$
+\begin{array}{ll}
+     & f(\rho) = \dfrac{v_{max}}{\rho_{max}}(\rho_{max}-\rho)\rho\\
+     \Leftrightarrow & f(\rho)=v_{max}.\rho - \dfrac{v_{max}}{\rho_{max}}\rho^2
+\end{array}
+$$
+
+On aura donc un flux maximal $f_{max} $ atteint en $\rho_c$ en $\rho_c=\dfrac{\rho_{max}}{2}$.
+$$ f(\rho_c)=f(\dfrac{\rho_{max}}{2})=f_{max}$$
+
+De cette expérience, nous pourrons observé dans un premier temps si le modèle LWR suit bien l'expérience mené, et ensuite un nuage de point correspondant à une fonction de la densité $\rho$ en fonction du temps $t$ : $\rho (t)$ sur le tronçon $(E-S)$ et ansi voir la forme de la fonction.
+
+
+\end{document}

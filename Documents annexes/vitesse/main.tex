@@ -1,0 +1,172 @@
+\documentclass[12pt, openany]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+\usepackage[french]{babel}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{enumitem}
+\usepackage[export]{adjustbox}
+\usepackage{lscape}
+\usepackage{pgfgantt}
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\usepackage{diagbox}
+\usepackage{slashbox}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xlop}
+\usepackage{fancyhdr}
+
+ \pagestyle{empty} 
+
+\renewcommand{\thesection}{\Large\hspace{1cm}\arabic{section}~.}
+
+\makeatletter
+\newcommand{\printresult}[1]{\pgfmathparse{#1}\let\temp@printresult\pgfmathresult\opcopy{\temp@printresult}{a}\opunzero{a}$\opprint{a}$}
+\makeatother
+
+\begin{document}
+
+\begin{center}\leavevmode
+        \normalfont
+        \rule[0pt]{\textwidth}{1pt}\par
+        {\LARGE Définition d'une nouvelle fonction de vitesse\par}%
+        \rule[0pt]{\textwidth}{1pt}\par
+\end{center}
+
+\section{Principe utilisé}
+
+Dans le Code de la route, on apprend que la distance de sécurité à respecter est déterminée par une formule dépendant uniquement de la vitesse. Nous devons prendre la dizaine de la vitesse et l'élever au carré afin d'obtenir la distance de sécurité en mètres. On approche cette formule par :
+$$ d = \left( \dfrac{V}{10} \right) ^2 $$
+
+\section{Application à notre modèle}
+
+Nous souhaitons définir $V$ en fonction de $\rho$ : la densité. Or $\rho$ est le nombre de véhicules par kilomètre. On a donc $\frac{1}{\rho}$ qui correspond à la distance moyenne occupé par chaque véhicule en kilomètres, c'est-à-dire la longueur du véhicule $l$ et la distance entre chaque véhicule $d$.\\
+On a donc :
+$$\dfrac{1}{\rho} = d + l = \left( \dfrac{V}{10} \right) ^2 + l$$
+
+Avec les unités utilisées :
+$$ \dfrac{1000}{\rho} = \left( \dfrac{V}{10} \right) ^2 + l$$
+\begin{itemize}
+	\item[$\rho$ :] Densité de véhicules ($véhicules.km^{-1}$)
+	\item[$V$ :] Vitesse des véhicules ($km.h^{-1}$)
+	\item[$l$ :] Longueur d'un véhicule ($m$)
+\end{itemize}
+
+Ainsi :
+$$
+\begin{array}{rl}
+	&\dfrac{1000}{\rho} = \left( \dfrac{V}{10} \right) ^2 + l\\
+	\\
+	\Leftrightarrow & \dfrac{1000}{\rho} -l = \dfrac{V^2}{100}\\
+	\\
+	\Leftrightarrow & V^2 = 100 \left( \dfrac{1000}{\rho} -l \right)\\
+	\\
+	\Leftrightarrow & V=\sqrt{100 \left( \dfrac{1000}{\rho} -l \right)}
+\end{array}
+$$	
+
+Cela donne donc :
+\begin{center}
+	\fbox{$v(\rho)=\sqrt{100 \left( \dfrac{1000}{\rho} -l \right)}$}
+\end{center}
+
+De manière arbitraire, nous choisissons dans notre modèle que $l=4m$.
+
+\begin{center}
+	\fbox{$v(\rho)=\sqrt{100 \left( \dfrac{1000}{\rho} -4 \right)}$}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}
+	\draw[very thin, gray] (0,0) grid [xstep=1.6] (16,18);
+	
+	\draw[->] (0,0) -- (17,0) node[below, text height=1cm] {$\rho~(véhicules.km^{-1})$};
+	\draw[->] (0,0) -- (0,19) node[right] {$v(\rho)~(km.h^{-1})$};
+	\draw (16,0) node {|} node [below] {\small $250$};
+	\draw (12.8,0) node[scale=.5] {|} node [below] {\small $200$};
+	\draw (9.6,0) node[scale=.5] {|} node [below] {\small $150$};
+	\draw (6.4,0) node[scale=.5] {|} node [below] {\small $100$};
+	\draw (3.2,0) node[scale=.5] {|} node [below] {\small $50$};
+	
+	\draw (0,18) node {$\_$} node [left] {\small $360$};
+	\draw (0,16) node {$\_$} node [left] {\small $320$};
+	\draw (0,14) node {$\_$} node [left] {\small $280$};
+	\draw (0,12) node {$\_$} node [left] {\small $240$};
+	\draw (0,10) node {$\_$} node [left] {\small $200$};
+	\draw (0,8) node {$\_$} node [left] {\small $160$};
+	\draw (0,6) node {$\_$} node [left] {\small $120$};
+	\draw (0,4) node {$\_$} node [left] {\small $80$};
+	\draw (0,2) node {$\_$} node [left] {\small $40$};
+	\draw [smooth, samples=200, domain=0.05:16] plot (\x, {(sqrt( (1000/ (15.625*\x)) -4))/ 2});
+\end{tikzpicture}
+\end{center}
+
+\section{Contrainte}
+
+La courbe obtenue montre des vitesses qui tendent vers l'infini quand la densité tend vers 0, on considère donc que les véhicules sont limités à une vitesse maximale que nous fixons à $130~km.h^{-1}$. On détermine donc la densité pour laquelle $v(\rho)=130$:
+
+$$
+\begin{array}{rlrl}
+	& V =\sqrt{100 \left( \dfrac{1000}{\rho} -l \right)}&
+	\Leftrightarrow & V^2 = 100 \left(\dfrac{1000}{\rho} -l \right)\\
+	\\
+	\Leftrightarrow & \dfrac{V^2}{100} +l = \dfrac{1}{\rho}&
+	\Leftrightarrow & \dfrac{\dfrac{V^2}{100} +l}{1000}\\
+	\\
+	\Leftrightarrow & \fbox{$\rho = \dfrac{1000}{\dfrac{V^2}{100} +l}$}
+	\\
+	\\
+	\mbox{Avec $l=4$ et $V=130$} \Leftrightarrow & \rho \approx 5,78
+\end{array}
+$$	
+
+On prend donc la fonction de vitesse suivante : 
+$$
+v(\rho) = \left\{\begin{array}{rl}
+	\sqrt{100 \left( \dfrac{1000}{\rho} -4 \right)} & \mbox{si } \rho>5,78\\
+	\\
+	130 & \mbox{sinon.}
+\end{array}\right.
+$$
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+	\draw[very thin, gray] (0,0) grid [xstep=1.6] (16,14);
+
+	\draw[->] (0,0) -- (17,0) node[below, text height=1cm] {$\rho~(véhicules.km^{-1})$};
+	\draw[->] (0,0) -- (0,15) node[right] {$v(\rho)~(km.h^{-1})$};
+	\draw (16,0) node[scale=.5] {|} node [below] {\small $250$};
+	\draw (12.8,0) node[scale=.5] {|} node [below] {\small $200$};
+	\draw (9.6,0) node[scale=.5] {|} node [below] {\small $150$};
+	\draw (6.4,0) node[scale=.5] {|} node [below] {\small $100$};
+	\draw (3.2,0) node[scale=.5] {|} node [below] {\small $50$};
+	
+	\draw (0,14) node {$\_$} node [left] {\small $140$};
+	\draw (0,12) node {$\_$} node [left] {\small $120$};
+	\draw (0,10) node {$\_$} node [left] {\small $100$};
+	\draw (0,8) node {$\_$} node [left] {\small $80$};
+	\draw (0,6) node {$\_$} node [left] {\small $60$};
+	\draw (0,4) node {$\_$} node [left] {\small $40$};
+	\draw (0,2) node {$\_$} node [left] {\small $20$};
+	\draw (0,13) -- (0.37,13);
+	\draw [smooth, samples=200, domain=0.37:16, ] plot (\x, {(sqrt( (1000/ (15.625*\x)) -4))});
+\end{tikzpicture}
+}
+
+\end{document}
